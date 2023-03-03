@@ -31,7 +31,7 @@ def createBook():
         renderPDF.draw(d[1], c, qr_placement_x, qr_placement_y)
         renderPDF.draw(d[0], c, 0, qr_placement_y)
         renderPDF.draw(d[3], c, qr_placement_x, 0)
-        c.drawImage("static/graph.png", 45, -300, 500, preserveAspectRatio=True)
+        c.drawImage("static/graph.png", 15, -300, 500, preserveAspectRatio=True)
     
     for p in range(1, 10):
         createPage(c, p)
