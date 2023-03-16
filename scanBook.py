@@ -1,7 +1,4 @@
-import glob
 import cv2
-# import pandas as pd
-import pathlib
 import numpy as np
 import imutils
 

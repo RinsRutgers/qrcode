@@ -4,9 +4,11 @@ from reportlab.lib.pagesizes import A4
 from reportlab.lib.units import mm
 from reportlab.pdfgen import canvas
 from reportlab.graphics import renderPDF
+from reportlab.graphics import renderPDF
+
 
 #----------------------------------------------------------------------
-def createBook():
+def createBook(uuid):
     """
     Create qr code with graphs and embed in a PDF
     """
@@ -17,7 +19,7 @@ def createBook():
         # draw a QR code
         d = {}
         for qr_number in range(0,4):
-            qrText = f"RR.0234.{p}.{qr_number}"
+            qrText = f"{uuid}.{p}.{qr_number}"
             qr_code = qr.QrCodeWidget(qrText)
             bounds = qr_code.getBounds()
             width = bounds[2] - bounds[0]
@@ -26,18 +28,21 @@ def createBook():
             d[qr_number].add(qr_code)
             qr_placement_x = widthPage - width
             qr_placement_y = heightPage - height
-            
+        dayHeight = heightPage - 80
+        dayText = f'Dag {p}'
+        c.drawString(90, dayHeight, dayText)
         renderPDF.draw(d[2], c, 0, 0)
         renderPDF.draw(d[1], c, qr_placement_x, qr_placement_y)
         renderPDF.draw(d[0], c, 0, qr_placement_y)
         renderPDF.draw(d[3], c, qr_placement_x, 0)
-        c.drawImage("static/graph.png", 15, -300, 500, preserveAspectRatio=True)
+        c.drawImage("static/graph.png", 15, -300, 550, preserveAspectRatio=True)
+        
     
-    for p in range(1, 10):
+    for p in range(1, 15):
         createPage(c, p)
         c.showPage()
 
     c.save()
     
 if __name__ == "__main__":
-    createBook()
+    createBook("RR.1234")
