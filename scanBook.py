@@ -3,7 +3,7 @@ import numpy as np
 import imutils
 
 
-img = cv2.imread('scan/pdf/colour/converted/page_4.jpg')
+img = cv2.imread('scan/pdf/colour/converted/page_1.jpg')
 cv2.imshow('image',img)
 cv2.waitKey(0)
 
@@ -71,23 +71,23 @@ deltaYBD = puntB[1] - puntD[1]
 print(deltaXBD)
 print(deltaYBD)
 
-XE = puntA[0] - int(0.2 * deltaXAC)
-YE = puntA[1] - int(0.2 * deltaYAC)
+XE = puntA[0] - int(0.18 * deltaXAC)
+YE = puntA[1] - int(0.18 * deltaYAC)
 
 XF = puntA[0] - int(0.68 * deltaXAC)
 YF = puntA[1] - int(0.68 * deltaYAC)
 
-XG = puntB[0] - int(0.2 * deltaXBD)
-YG = puntB[1] - int(0.2 * deltaYBD)
+XG = puntB[0] - int(0.18 * deltaXBD)
+YG = puntB[1] - int(0.18 * deltaYBD)
 
 XH = puntB[0] - int(0.68 * deltaXBD)
 YH = puntB[1] - int(0.68 * deltaYBD)
 
-cv2.circle(img, (XE, YE), 5, (255,0,0), 20)
-cv2.circle(img, (XF, YF), 5, (255,0,0), 20)
+cv2.circle(img, (XE, YE), 3, (255,0,0), 20)
+cv2.circle(img, (XF, YF), 3, (255,0,0), 20)
 
-cv2.circle(img, (XG, YG), 5, (255,0,0), 20)
-cv2.circle(img, (XH, YH), 5, (255,0,0), 20)
+cv2.circle(img, (XG, YG), 3, (255,0,0), 20)
+cv2.circle(img, (XH, YH), 3, (255,0,0), 20)
 cv2.imshow('image',img)
 cv2.waitKey(0)
 
@@ -104,57 +104,57 @@ cv2.imshow('image',imgOutput)
 cv2.waitKey(0)
 
 # Cropping an image
-cropped_image = imgOutput[0:1100, 200:1900]
+cropped_image = imgOutput[0:1100, 130:2000]
  
 # Display cropped image
 cv2.imshow("cropped", cropped_image)
 cv2.waitKey(0)
 
-gray = cv2.cvtColor(cropped_image, cv2.COLOR_BGR2GRAY)
-cv2.imshow('image',gray)
-cv2.waitKey(0)
-blurred = cv2.GaussianBlur(gray, (5, 5), 0)
-cv2.imshow('image',blurred)
-cv2.waitKey(0)
-(T, threshInv) = cv2.threshold(blurred, 150, 255, cv2.THRESH_BINARY_INV,
-	cv2.THRESH_OTSU)
-cv2.imshow("Threshold Binary Inverse", threshInv)
-cv2.waitKey(0)
+# gray = cv2.cvtColor(cropped_image, cv2.COLOR_BGR2GRAY)
+# cv2.imshow('image',gray)
+# cv2.waitKey(0)
+# blurred = cv2.GaussianBlur(gray, (5, 5), 0)
+# cv2.imshow('image',blurred)
+# cv2.waitKey(0)
+# (T, threshInv) = cv2.threshold(blurred, 150, 255, cv2.THRESH_BINARY_INV,
+# 	cv2.THRESH_OTSU)
+# cv2.imshow("Threshold Binary Inverse", threshInv)
+# cv2.waitKey(0)
 
-cnts = cv2.findContours(threshInv.copy(), cv2.RETR_EXTERNAL,
-	cv2.CHAIN_APPROX_SIMPLE)
-cnts = imutils.grab_contours(cnts)
-questionCnts = []
-# loop over the contours
-for c in cnts:
-	# compute the bounding box of the contour, then use the
-	# bounding box to derive the aspect ratio
-	(x, y, w, h) = cv2.boundingRect(c)
-	ar = w / float(h)
-	# in order to label the contour as a question, region
-	# should be sufficiently wide, sufficiently tall, and
-	# have an aspect ratio approximately equal to 1
-	if w >= 4 and h >= 4 and ar >= 0.8 and ar <= 1.2:
-		questionCnts.append(c)
-print(len(cnts))
-print(len(questionCnts))
+# cnts = cv2.findContours(threshInv.copy(), cv2.RETR_EXTERNAL,
+# 	cv2.CHAIN_APPROX_SIMPLE)
+# cnts = imutils.grab_contours(cnts)
+# questionCnts = []
+# # loop over the contours
+# for c in cnts:
+# 	# compute the bounding box of the contour, then use the
+# 	# bounding box to derive the aspect ratio
+# 	(x, y, w, h) = cv2.boundingRect(c)
+# 	ar = w / float(h)
+# 	# in order to label the contour as a question, region
+# 	# should be sufficiently wide, sufficiently tall, and
+# 	# have an aspect ratio approximately equal to 1
+# 	if w >= 4 and h >= 4 and ar >= 0.8 and ar <= 1.2:
+# 		questionCnts.append(c)
+# print(len(cnts))
+# print(len(questionCnts))
 
-cv2.drawContours(cropped_image, questionCnts, -1, (0,255,0), 3)
-cv2.imshow("Threshold Binary Inverse", cropped_image)
-cv2.waitKey(0)
+# cv2.drawContours(cropped_image, questionCnts, -1, (0,255,0), 3)
+# cv2.imshow("Threshold Binary Inverse", cropped_image)
+# cv2.waitKey(0)
 
 
 
-questionCnts = cv2.contours.sort_contours(questionCnts,
-	method="left-to-right")[0]
-correct = 0
-# each question has 5 possible answers, to loop over the
-# question in batches of 5
-for (q, i) in enumerate(np.arange(0, len(questionCnts), 10)):
-	# sort the contours for the current question from
-	# left to right, then initialize the index of the
-	# bubbled answer
-	cnts = cv2.contours.sort_contours(questionCnts[i:i + 10])[0]
-	bubbled = None
+# questionCnts = cv2.contours.sort_contours(questionCnts,
+# 	method="left-to-right")[0]
+# correct = 0
+# # each question has 5 possible answers, to loop over the
+# # question in batches of 5
+# for (q, i) in enumerate(np.arange(0, len(questionCnts), 10)):
+# 	# sort the contours for the current question from
+# 	# left to right, then initialize the index of the
+# 	# bubbled answer
+# 	cnts = cv2.contours.sort_contours(questionCnts[i:i + 10])[0]
+# 	bubbled = None
 
 cv2.imwrite('qrcode_bare.jpg', cropped_image)
