@@ -3,7 +3,7 @@ import numpy as np
 import imutils
 
 
-img = cv2.imread('pictures/IMG_8752.JPG')
+img = cv2.imread('scan/pdf/colour/converted/page_4.jpg')
 cv2.imshow('image',img)
 cv2.waitKey(0)
 
@@ -74,14 +74,14 @@ print(deltaYBD)
 XE = puntA[0] - int(0.2 * deltaXAC)
 YE = puntA[1] - int(0.2 * deltaYAC)
 
-XF = puntA[0] - int(0.64 * deltaXAC)
-YF = puntA[1] - int(0.64 * deltaYAC)
+XF = puntA[0] - int(0.68 * deltaXAC)
+YF = puntA[1] - int(0.68 * deltaYAC)
 
 XG = puntB[0] - int(0.2 * deltaXBD)
 YG = puntB[1] - int(0.2 * deltaYBD)
 
-XH = puntB[0] - int(0.64 * deltaXBD)
-YH = puntB[1] - int(0.64 * deltaYBD)
+XH = puntB[0] - int(0.68 * deltaXBD)
+YH = puntB[1] - int(0.68 * deltaYBD)
 
 cv2.circle(img, (XE, YE), 5, (255,0,0), 20)
 cv2.circle(img, (XF, YF), 5, (255,0,0), 20)
@@ -96,8 +96,6 @@ output = np.float32([[0,0], [2084,0],[0,1100], [2084,1100]])
 
 # compute perspective matrix
 matrix = cv2.getPerspectiveTransform(input,output)
-
-
 
 # do perspective transformation setting area outside input to black
 imgOutput = cv2.warpPerspective(img, matrix, (2084,1100), cv2.INTER_LINEAR, borderMode=cv2.BORDER_CONSTANT, borderValue=(0,0,0))

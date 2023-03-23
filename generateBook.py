@@ -20,11 +20,11 @@ def createBook(uuid):
         d = {}
         for qr_number in range(0,4):
             qrText = f"{uuid}.{p}.{qr_number}"
-            qr_code = qr.QrCodeWidget(qrText)
+            qr_code = qr.QrCodeWidget(qrText, barLevel = 'H', width=240, height=240)
             bounds = qr_code.getBounds()
             width = bounds[2] - bounds[0]
             height = bounds[3] - bounds[1]
-            d[qr_number] = Drawing(90, 90)
+            d[qr_number] = Drawing(300, 300)
             d[qr_number].add(qr_code)
             qr_placement_x = widthPage - width
             qr_placement_y = heightPage - height
