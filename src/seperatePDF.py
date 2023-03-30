@@ -3,11 +3,6 @@ import os
 
 import cv2
 import numpy as np
-import imutils
-
-from PIL import Image, ImageDraw
-from pyzbar.pyzbar import ZBarSymbol
-from pyzbar.pyzbar import decode
 
 def crop_image(img):
     # Read image
@@ -23,7 +18,6 @@ def crop_image(img):
     for s, p in zip(decoded_info, points):
         qrScannedNumber = s.split('.')
         number = int(qrScannedNumber[3])
-        print(f"proefpersoon: {decoded_info}")
         # print(number)
         if number == 0:
             print(f'dag: {int(qrScannedNumber[2])}')
@@ -43,11 +37,6 @@ def crop_image(img):
             puntD = p[1].astype(int)
         # img = cv2.putText(img, number, p[0].astype(int),cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 4, cv2.LINE_AA)
         img = cv2.putText(img, str(p[0]), p[0].astype(int),cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 4, cv2.LINE_AA)
-
-    # print(f'puntA: {puntA}')
-    # print(f'puntB: {puntB}')
-    # print(f'puntC: {puntC}')
-    # print(f'puntD: {puntD}')
 
     cv2.circle(img, puntA, 5, (255,0,0), 20)
     cv2.circle(img, puntB, 5, (255,0,0), 20)
@@ -109,8 +98,6 @@ def seperate(cropped_img_inv, cropped_image):
     cv2.imshow(f"cropped_img_inv", cropped_img_inv)
     cv2.imshow(f"cropped_image", cropped_image)
 
-    # print(height)
-    # print(width)
     score = []
     columns = []
     col_width = int(width/10)
@@ -122,7 +109,7 @@ def seperate(cropped_img_inv, cropped_image):
         cv2.imshow(f"column_{j}", columns[j])
         
         cropped_image_lines = cv2.line(cropped_image, (col_end, 0), (col_end, height), (0, 0, 255), 5) 
-        cv2.imshow(f"line", cropped_image_lines)
+        
         row_height = int(height/11)
         highest = 0
         highestIndex = 0
@@ -138,8 +125,6 @@ def seperate(cropped_img_inv, cropped_image):
             # cv2.destroyAllWindows()
             white = cv2.countNonZero(row)
             if (white > highest):
-                print(f"highest: {highest}    current white: {white}     i:{i}    score:{score}")
-                
                 highestIndex = i
                 highest = white
             # cv2.imshow(f"col{j} row{i}", columns[j][i])
@@ -147,16 +132,10 @@ def seperate(cropped_img_inv, cropped_image):
             score.append(10-highestIndex)
         else:
             score.append("NaN")
-
-        print(f"highestIndex: {highestIndex}")        
+        cropped_image_lines = cv2.putText(cropped_image_lines, str(score[j]), (col_start+5 , height-5),cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 255, 0), 4, cv2.LINE_AA)
+        cv2.imshow(f"line", cropped_image_lines)
     print(f"score: {score}")
     cv2.waitKey(0)
-            # columns[j][i] = row
-
-def detect_qr_code_zbar(image_path):
-    image = Image.open(image_path)
-    decoded_info = decode(image,  symbols=[ZBarSymbol.QRCODE])
-    return decoded_info
 
 def detect_qr_code(image_path):
     img = cv2.imread(image_path)
@@ -191,13 +170,9 @@ def pdf_to_jpg(pdf_path, output_dir):
     return jpg_paths
 
 if __name__ == "__main__":
-    path_list = pdf_to_jpg("scan/pdf/colour/Scan-rins_rutgers-0545_001.pdf", "scan/pdf/colour/converted")
+    path_list = pdf_to_jpg("../scan/pdf/colour/Scan-rins_rutgers-0545_001.pdf", "../scan/pdf/colour/converted")
     for path in path_list:
         decoded_info = detect_qr_code(path)
-        # print(decoded_info)
         cropped_img_inv, cropped_image = crop_image(path)
         seperate(cropped_img_inv, cropped_image)
-    # for path in path_list:
-    #     decoded_info = detect_qr_code_zbar(path)
-    #     for data in decoded_info:
-    #         print(data.data)
+
