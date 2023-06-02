@@ -22,9 +22,10 @@ def createBook(uuid):
         d = {}
         qr_size = 100  # set the size of the QR codes
         qr_border = 1  # set the border size of the QR codes
+        page_date = "12-10-1002"
         for qr_number in range(0, 4):
-            qrText = f"{uuid}.{p}.{qr_number}"
-            qr = qrcode.QRCode(version=1, box_size=10, border=qr_border, error_correction=qrcode.constants.ERROR_CORRECT_H)
+            qrText = f"{uuid}.{p}.{page_date}.{qr_number}"
+            qr = qrcode.QRCode(version=3, box_size=10, border=qr_border, error_correction=qrcode.constants.ERROR_CORRECT_H)
             qr.add_data(qrText)
             qr.make(fit=True)
             img = qr.make_image(fill_color="black", back_color="white")
@@ -33,18 +34,18 @@ def createBook(uuid):
         qr_x_margin = 20  # set the margin size for the x-axis
         qr_y_margin = 20  # set the margin size for the y-axis
         c.drawInlineImage(d[0], qr_x_margin, heightPage - qr_size - qr_y_margin, width=qr_size, height=qr_size)
-        c.drawInlineImage(d[1], widthPage - qr_size - qr_x_margin, heightPage - qr_size - qr_y_margin, width=qr_size, height=qr_size)
-        c.drawInlineImage(d[2], qr_x_margin, qr_y_margin, width=qr_size, height=qr_size)
-        c.drawInlineImage(d[3], widthPage - qr_size - qr_x_margin, qr_y_margin, width=qr_size, height=qr_size)
+        # c.drawInlineImage(d[1], widthPage - qr_size - qr_x_margin, heightPage - qr_size - qr_y_margin, width=qr_size, height=qr_size)
+        # c.drawInlineImage(d[2], qr_x_margin, qr_y_margin, width=qr_size, height=qr_size)
+        # c.drawInlineImage(d[3], widthPage - qr_size - qr_x_margin, qr_y_margin, width=qr_size, height=qr_size)
         # add day text
         dayHeight = heightPage - 140
         dayText = f'Dag {p}'
         c.drawString(90, dayHeight, dayText)
         # add graph
-        c.drawImage("static/graph.png", 15, -300, 512, preserveAspectRatio=True)
+        c.drawImage("../static/graph.png", 15, -300, 512, preserveAspectRatio=True)
         
 
-    for p in range(1, 15):
+    for p in range(1, 5):
         createPage(c, p)
         c.showPage()
 

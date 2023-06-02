@@ -41,9 +41,9 @@ def createBook(uuid):
         dayHeight = heightPage - 80
         dayText = f'Dag {p}'
         c.drawString(90, dayHeight, dayText)
-        qr_code = ImageReader(d[2])
+        # qr_code = Image.open(d[2])
 
-        c.drawImage(d[2], 0, 0)
+        # c.drawImage(d[2], 0, 0)
         renderPDF.draw(d[2], c, 0, 0)
         renderPDF.draw(d[1], c, qr_placement_x, qr_placement_y)
         renderPDF.draw(d[0], c, 0, qr_placement_y)
